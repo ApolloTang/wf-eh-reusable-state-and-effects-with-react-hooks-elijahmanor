@@ -13,6 +13,7 @@
     "@babel/plugin-proposal-class-properties": "^7.5.0",
     "@babel/preset-env": "^7.5.0",
     "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.2",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.0.0",
     "eslint": "^6.0.1",
@@ -30,7 +31,6 @@
     "@emotion/styled": "^10.0.14",
     "@reach/dialog": "^0.2.9",
     "@types/reach__dialog": "^0.1.0",
-    "emotion": "^10.0.14",
     "lodash.uniqueid": "^4.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
