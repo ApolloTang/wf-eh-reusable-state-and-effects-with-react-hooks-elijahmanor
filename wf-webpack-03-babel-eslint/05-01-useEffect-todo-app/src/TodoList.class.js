@@ -25,18 +25,16 @@ export default class TodoList extends Component {
       newTodo   : "",
       showAbout : false
     };
-
-    this.handleNewChange       = this.handleNewChange.bind(this);
-    this.handleNewSubmit       = this.handleNewSubmit.bind(this);
-    this.handleDelete          = this.handleDelete.bind(this);
-    this.handleCompletedToggle = this.handleCompletedToggle.bind(this);
-    this.handleKey             = this.handleKey.bind(this);
-
   }
 
-  handleKey({ key }) {
+  handleKey = ({ key }) => {
     this.setState(
-      prevState => ({ showAbout: key === "?" ? true : key === "Escape" ? false : prevState.showAbout })
+      prevState => ({
+        showAbout:
+          key === "?"
+          ? true
+          : key === "Escape" ? false : prevState.showAbout
+      })
     );
   }
 
@@ -47,6 +45,8 @@ export default class TodoList extends Component {
   componentWillUnmount() {
     document.removeEventListener("keydown", this.handleKey);
   }
+
+
 
   update(_todos) {
     updateUnfinishedTodoCount(_todos)
@@ -62,9 +62,9 @@ export default class TodoList extends Component {
 
 
 
-  handleNewChange(e) { this.setState({ newTodo: e.target.value }) }
+  handleNewChange = e => { this.setState({ newTodo: e.target.value }) }
 
-  handleNewSubmit(e) {
+  handleNewSubmit = e => {
     e.preventDefault();
     this.setState(
       prevState => ({
@@ -77,13 +77,13 @@ export default class TodoList extends Component {
     );
   }
 
-  handleDelete(id /* , e */) {
+  handleDelete = (id /* , e */) => {
     this.setState(
       prevState => ({ todos: prevState.todos.filter(todo => todo.id !== id) })
     )
   }
 
-  handleCompletedToggle(id /* , e */) {
+  handleCompletedToggle = (id /* , e */) => {
     this.setState(
       prevState => ({
         todos: prevState.todos.map( todo =>
