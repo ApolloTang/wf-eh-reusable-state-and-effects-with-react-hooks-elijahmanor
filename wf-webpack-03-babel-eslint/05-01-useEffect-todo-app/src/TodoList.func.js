@@ -19,25 +19,23 @@ export default function TodoList() {
   const initialTodos = () =>
     JSON.parse(window.localStorage.getItem("todos") || "[]");
 
+
   const [ newTodo,   updateNewTodo ] = useState("");
   const [ todos,     updateTodos   ] = useState(initialTodos);
+                                       // note: useState can take a function
   let   [ showAbout, setShowAbout  ] = useState(false);
 
 
 
   const handleKey = ({ key }) => {
-    setShowAbout( show => key==="?" ? true : key==="Escape" ? false : show )
+    setShowAbout(
+      show =>
+        key==="?"
+        ? true
+        : key==="Escape" ? false : show
+    )
   };
 
-  const update = (_todos) => {
-    updateUnfinishedTodoCount(_todos)
-    window.localStorage.setItem("todos", JSON.stringify(_todos));
-  }
-
-  useEffect(
-    () => { update(todos) },
-    [todos]  // only run after render whenever 'todos' change
-  );
 
   useEffect(
     () => {
@@ -46,6 +44,19 @@ export default function TodoList() {
     },
     [] // proved empty array only run onMount and unmount
   );
+
+
+  const update = (_todos) => {
+    updateUnfinishedTodoCount(_todos)
+    window.localStorage.setItem("todos", JSON.stringify(_todos));
+  }
+
+  useEffect(
+    () => { update(todos) },
+    [todos]  // run after render whenever 'todos' change
+  );
+
+
 
 
 

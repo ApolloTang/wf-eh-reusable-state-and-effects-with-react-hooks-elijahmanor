@@ -15,13 +15,15 @@ const updateUnfinishedTodoCount = (_todos) =>  {
 
 export default class TodoList extends Component {
 
+  initialTodos() {
+    return JSON.parse(window.localStorage.getItem("todos") || "[]");
+  }
+
   constructor(props) {
     super(props);
 
-    this.initialTodos = JSON.parse(window.localStorage.getItem("todos") || "[]");
-
     this.state = {
-      todos     : this.initialTodos,
+      todos     : this.initialTodos(),
       newTodo   : "",
       showAbout : false
     };
