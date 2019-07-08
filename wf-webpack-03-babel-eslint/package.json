@@ -1,0 +1,38 @@
+{
+  "name": "react-project-boilerplate",
+  "version": "1.0.0",
+  "description": "basic react set up",
+  "repository": "https://github.com/ApolloTang/react-lab-boilerplate",
+  "author": "Apolo Tang",
+  "license": "BSD",
+  "scripts": {
+    "dev": "webpack-dev-server --progress"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.0",
+    "@babel/plugin-proposal-class-properties": "^7.5.0",
+    "@babel/preset-env": "^7.5.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.0.0",
+    "eslint": "^6.0.1",
+    "eslint-plugin-react": "^7.14.2",
+    "eslint-plugin-react-hooks": "^1.6.1",
+    "html-webpack-plugin": "^3.2.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.35.2",
+    "webpack-cli": "^3.3.5",
+    "webpack-dev-server": "^3.7.2"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.4.4",
+    "@emotion/core": "^10.0.14",
+    "@emotion/styled": "^10.0.14",
+    "@reach/dialog": "^0.2.9",
+    "@types/reach__dialog": "^0.1.0",
+    "emotion": "^10.0.14",
+    "lodash.uniqueid": "^4.0.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  }
+}
