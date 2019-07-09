@@ -42,7 +42,7 @@ export default function TodoList() {
       document.addEventListener("keydown", handleKey);
       return () => document.removeEventListener("keydown", handleKey);
     },
-    [] // proved empty array only run onMount and unmount
+    [] // run onMount and unmount
   );
 
 
