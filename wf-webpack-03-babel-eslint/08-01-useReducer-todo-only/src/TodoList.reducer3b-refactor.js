@@ -22,7 +22,7 @@ const reducer = (state, action) => {
 }
 
 
-const useReducerWithLocalStorage = (key, defaultData) => {
+const useReducerWithLocalStorage = (_reducer, key, defaultData) => {
   const readLocalStorage = (_key, _defaultData) => JSON.parse(
     window.localStorage.getItem(_key) || JSON.stringify(_defaultData)
   )
@@ -31,7 +31,7 @@ const useReducerWithLocalStorage = (key, defaultData) => {
   }
 
   const [data, dispatch] = useReducer(
-    hookReducerLogger(reducer),
+    hookReducerLogger(_reducer),
     useMemo(()=>readLocalStorage(key, defaultData), [])
   );
   useEffect(()=>{ writeLocalStorage(key, data) }, [data]);
@@ -47,7 +47,7 @@ export default function TodoList() {
   const [newTodo, updateNewTodo] = useState("");
   const handleNewChange = e => updateNewTodo(e.target.value);
 
-  const [todos, dispatch] = useReducerWithLocalStorage('todos', []);
+  const [todos, dispatch] = useReducerWithLocalStorage(reducer, 'todos', []);
   const nextId = useRef(getNextId(todos))
 
   const handleNewSubmit = e => {
