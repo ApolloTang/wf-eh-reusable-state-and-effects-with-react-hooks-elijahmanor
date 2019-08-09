@@ -1,4 +1,4 @@
 import React from "react";
-import TodoList from "./TodoList.reducer3";
+import TodoList from "./TodoList.reducer3b-refactor";
 
 export default () => <TodoList />;
