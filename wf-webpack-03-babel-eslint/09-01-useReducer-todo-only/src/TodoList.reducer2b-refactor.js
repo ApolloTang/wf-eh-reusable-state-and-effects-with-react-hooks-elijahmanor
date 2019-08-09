@@ -5,6 +5,7 @@ import { Container, List } from "./Styled";
 import hookReducerLogger from './hookReducerLogger'
 
 
+
 const reducer = (state, action) => {
   switch (action.type) {
     case "ADD_TODO": {
@@ -22,6 +23,28 @@ const reducer = (state, action) => {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export default function TodoList() {
   const [newTodo, updateNewTodo] = useState("");
   const handleNewChange = e => updateNewTodo(e.target.value);
@@ -36,6 +59,7 @@ export default function TodoList() {
   };
   const handleDelete = (id) => { dispatch({ type: "DELETE_TODO", payload:{id}  }); };
   const handleCompletedToggle = (id) => { dispatch({ type: "TOGGLE_TODO", payload:{id} }); };
+
 
   return (
     <Container todos={todos}>
