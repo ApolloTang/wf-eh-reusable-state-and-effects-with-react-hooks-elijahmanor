@@ -22,19 +22,19 @@ const reducer = (state, action) => {
 }
 
 
-const useReducerWithLocalStorage = (_reducer, key, defaultData) => {
-  const readLocalStorage = (_key, _defaultData) => JSON.parse(
-    window.localStorage.getItem(_key) || JSON.stringify(_defaultData)
+const useReducerWithLocalStorage = (_reducer, storageName, defaultData) => {
+  const readLocalStorage = (_storageName, _defaultData) => JSON.parse(
+    window.localStorage.getItem(_storageName) || JSON.stringify(_defaultData)
   )
-  const writeLocalStorage = (_key, _data) => {
-    window.localStorage.setItem(_key, JSON.stringify(_data))
+  const writeLocalStorage = (_storageName, _data) => {
+    window.localStorage.setItem(_storageName, JSON.stringify(_data))
   }
 
   const [data, dispatch] = useReducer(
     hookReducerLogger(_reducer),
-    useMemo(()=>readLocalStorage(key, defaultData), [])
+    useMemo(()=>readLocalStorage(storageName, defaultData), [])
   );
-  useEffect(()=>{ writeLocalStorage(key, data) }, [data]);
+  useEffect(()=>{ writeLocalStorage(storageName, data) }, [data]);
 
   return [data, dispatch];
 };
