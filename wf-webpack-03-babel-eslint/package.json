@@ -31,6 +31,7 @@
     "@emotion/styled": "^10.0.15",
     "@reach/dialog": "^0.2.9",
     "@types/reach__dialog": "^0.1.0",
+    "lodash": "^4.17.15",
     "lodash.uniqueid": "^4.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
