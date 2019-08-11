@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
+import { useState } from "react";
 import TodoList from "./TodoList.func";
 import Switch from "./Switch";
 import { Helmet } from "react-helmet";
@@ -26,34 +27,44 @@ const styles = {
 }`
 };
 
-export default class App extends Component {
-  state = { theme: "dark" };
-  componentDidMount() {
-    const theme = window.localStorage.getItem("theme") || this.state.theme;
-    this.setState({ theme });
-  }
-  handleThemeChange = flag => {
+
+const App = () =>  {
+
+  const [theme, updateTheme] = useState('dark')
+
+  // componentDidMount() {
+  //   const theme = window.localStorage.getItem("theme") || this.state.theme;
+  //   this.setState({ theme });
+  // }
+  // const handleThemeChange = flag => {
+  //   const theme = flag ? "light" : "dark";
+  //   this.setState({ theme });
+  //   window.localStorage.setItem("theme", theme);
+  // };
+
+  const handleThemeChange = flag => {
     const theme = flag ? "light" : "dark";
-    this.setState({ theme });
-    window.localStorage.setItem("theme", theme);
+    updateTheme(theme);
+    // window.localStorage.setItem("theme", theme);
   };
-  render() {
-    const { theme } = this.state;
-    return (
-      <main>
-        <Helmet>
-          <style>{styles[theme]}</style>
-        </Helmet>
-        <ThemeContext.Provider value={theme}>
-          <Container>
-            <Switch
-              checked={theme === "light"}
-              onChange={this.handleThemeChange}
-            />
-          </Container>
-          <TodoList />
-        </ThemeContext.Provider>
-      </main>
-    );
-  }
+
+  console.log(theme)
+  return (
+    <main>
+      <Helmet>
+        <style>{styles[theme]}</style>
+      </Helmet>
+      <ThemeContext.Provider value={theme}>
+        <Container>
+          <Switch
+            checked={theme === "light"}
+            onChange={handleThemeChange}
+          />
+        </Container>
+        <TodoList />
+      </ThemeContext.Provider>
+    </main>
+  );
 }
+
+export default App
