@@ -72,3 +72,16 @@ export const useTodosWithLocalStorage = defaultValue => {
   );
   return [todos, dispatch];
 };
+
+
+export const useStateWithLocalStorage = (storageName, defaultData) => {
+  const readLocalStorage = (_storeName, _defaultData) => JSON.parse(
+    window.localStorage.getItem(_storeName) || JSON.stringify(_defaultData)
+  )
+  const writeLocalStorage = (_storageName, _data) => {
+    window.localStorage.setItem(_storageName, JSON.stringify(_data))
+  }
+  const [data, updateStorage] = useState(readLocalStorage(storageName, defaultData))
+  useEffect( () => { writeLocalStorage(storageName, data) }, [data])
+  return [data, updateStorage]
+}
