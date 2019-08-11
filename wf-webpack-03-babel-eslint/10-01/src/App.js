@@ -1,10 +1,11 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TodoList from "./TodoList.func";
 import Switch from "./Switch";
 import { Helmet } from "react-helmet";
 import ThemeContext from "./ThemeContext";
 import styled from "@emotion/styled";
+
 
 const Container = styled("div")`
   margin: 3em auto 1em auto;
@@ -28,27 +29,29 @@ const styles = {
 };
 
 
+
+const useStateWithLocalStorage = (storageName, defaultData) => {
+  const readLocalStorage = (_storeName, _defaultData) => JSON.parse(
+    window.localStorage.getItem(_storeName) || JSON.stringify(_defaultData)
+  )
+  const writeLocalStorage = (_storageName, _data) => {
+    window.localStorage.setItem(_storageName, JSON.stringify(_data))
+  }
+  const [data, updateStorage] = useState(readLocalStorage(storageName, defaultData))
+  useEffect( () => { writeLocalStorage(storageName, data) }, [data])
+  return [data, updateStorage]
+}
+
+
+
 const App = () =>  {
-
-  const [theme, updateTheme] = useState('dark')
-
-  // componentDidMount() {
-  //   const theme = window.localStorage.getItem("theme") || this.state.theme;
-  //   this.setState({ theme });
-  // }
-  // const handleThemeChange = flag => {
-  //   const theme = flag ? "light" : "dark";
-  //   this.setState({ theme });
-  //   window.localStorage.setItem("theme", theme);
-  // };
+  const [theme, updateTheme] = useStateWithLocalStorage('theme', 'dark')
 
   const handleThemeChange = flag => {
     const theme = flag ? "light" : "dark";
     updateTheme(theme);
-    // window.localStorage.setItem("theme", theme);
   };
 
-  console.log(theme)
   return (
     <main>
       <Helmet>
