@@ -1,90 +1,92 @@
+/**
+ * -----------------------------------
+ * This component does not use reducer
+ * -----------------------------------
+ **/
 import React, { Component } from "react";
 import NewTodo from "./NewTodo";
-import TodoItem from "./TodoItem";
+import TodoItem from "./TodoItem.func";
+// import TodoItem from "./TodoItem.class";
 import { Container, List } from "./Styled";
 import About from "./About";
 import ThemeContext from "./ThemeContext";
 
-class TodoList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      todos: [],
-      newTodo: "",
-      showAbout: false
-    };
-    this.handleNewChange = this.handleNewChange.bind(this);
-    this.handleNewSubmit = this.handleNewSubmit.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
-    this.handleCompletedToggle = this.handleCompletedToggle.bind(this);
-    this.handleKey = this.handleKey.bind(this);
-    this.todoId = 0;
+const incompleteTodoCount = todos =>
+  todos.reduce((memo, todo) => (!todo.completed ? memo + 1 : memo), 0);
+
+const calGreatestTodoId = (todos=[], startId=0) =>
+  todos.reduce((acc, todo)=>Math.max(acc,todo.id), startId)
+
+export default class TodoList extends Component {
+  state = {
+    todos: [],
+    newTodo: "",
+    showAbout: false
   }
-  handleKey({ key }) {
+  todoId = 0
+
+  constructor(props) { super(props) }
+
+  handleKey = ({ key }) => {
     this.setState(prevState => {
-      return {
-        showAbout:
-          key === "?" ? true : key === "Escape" ? false : prevState.showAbout
-      };
+      return { showAbout: key === "?" ? true : key === "Escape" ? false : prevState.showAbout };
     });
   }
-  update(todos) {
-    const inCompleteTodos = todos.reduce(
-      (memo, todo) => (!todo.completed ? memo + 1 : memo),
-      0
-    );
+
+
+  updateTitleAndLocalStorage(todos) {
+    const inCompleteTodos = incompleteTodoCount(todos)
     document.title = inCompleteTodos ? `Todos (${inCompleteTodos})` : "Todos";
     window.localStorage.setItem("todos", JSON.stringify(todos));
   }
+
+
   componentDidMount() {
     const todos = JSON.parse(window.localStorage.getItem("todos") || "[]");
-    this.todoId = todos.reduce((memo, todo) => Math.max(memo, todo.id), 0);
     document.addEventListener("keydown", this.handleKey);
-    this.update(todos);
+    this.updateTitleAndLocalStorage(todos);
     this.setState({ todos });
-  }
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.todos !== this.state.todos) {
-      this.update(this.state.todos);
-    }
   }
   componentWillUnmount() {
     document.removeEventListener("keydown", this.handleKey);
   }
-  handleNewChange(e) {
-    this.setState({
-      newTodo: e.target.value
-    });
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.todos !== this.state.todos) {
+      this.updateTitleAndLocalStorage(this.state.todos);
+    }
   }
-  handleNewSubmit(e) {
+
+
+  handleNewSubmit = e => {
     e.preventDefault();
-    this.todoId += 1;
+    const prevId = calGreatestTodoId(this.state.todos, this.todoId) //@TODO only have to do this on reload
     this.setState(prevState => {
       return {
         todos: [
           ...prevState.todos,
-          { id: this.todoId, text: prevState.newTodo, completed: false }
+          { id: prevId+1, text: prevState.newTodo, completed: false }
         ],
-        newTodo: ""
+        newTodo:''
       };
     });
   }
-  handleDelete(id, e) {
+  handleNewChange = e => this.setState({ newTodo: e.target.value })
+  handleDeleteTodo = id =>  {
     this.setState(prevState => {
-      return {
-        todos: prevState.todos.filter(todo => todo.id !== id)
-      };
+      return { todos: prevState.todos.filter(todo => todo.id !== id) };
     });
   }
-  handleCompletedToggle(id, e) {
+  handleToggleComplete = id =>  {
     this.setState(prevState => {
       return {
-        todos: prevState.todos.map(todo =>
-          todo.id === id ? { ...todo, completed: !todo.completed } : todo
+        todos: prevState.todos.map(
+          todo => todo.id === id ? { ...todo, completed: !todo.completed } : todo
         )
       };
     });
   }
+  handleAboutClose = () => { this.setState({ showAbout: false }) }
+
   render() {
     const { newTodo, todos, showAbout } = this.state;
     return (
@@ -100,20 +102,16 @@ class TodoList extends Component {
               <TodoItem
                 key={todo.id}
                 todo={todo}
-                onChange={this.handleCompletedToggle}
-                onDelete={this.handleDelete}
+                onChange={this.handleToggleComplete}
+                onDelete={this.handleDeleteTodo}
               />
             ))}
           </List>
         )}
-        <About
-          isOpen={showAbout}
-          onClose={() => this.setState({ showAbout: false })}
-        />
+        <About isOpen={showAbout} onClose={this.handleAboutClose} />
       </Container>
     );
   }
 }
 TodoList.contextType = ThemeContext;
 
-export default TodoList;

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { useContext } from "react";
 import styled from "@emotion/styled";
 import Checkbox from "./Checkbox";
@@ -39,35 +39,13 @@ const TodoItem = ({ todo, onChange, onDelete }) => {
         id={todo.id}
         label={todo.text}
         checked={todo.completed}
-        onChange={onChange.bind(this, todo.id)}
+        onChange={onChange.bind(null, todo.id)}
       />
-      <Button onClick={onDelete.bind(this, todo.id)} theme={theme}>
+      <Button onClick={onDelete.bind(null, todo.id)} theme={theme}>
         x
       </Button>
     </Item>
   );
 }
-
-// class TodoItem extends Component {
-//   render() {
-//     const { todo, onChange, onDelete } = this.props;
-//     return (
-//       <Item key={todo.id} theme={this.context}>
-//         <Checkbox
-//           id={todo.id}
-//           label={todo.text}
-//           checked={todo.completed}
-//           onChange={onChange.bind(this, todo.id)}
-//         />
-//         <Button onClick={onDelete.bind(this, todo.id)} theme={this.context}>
-//           x
-//         </Button>
-//       </Item>
-//     );
-//   }
-// }
-// TodoItem.contextType = ThemeContext;
-
-
 
 export default TodoItem;

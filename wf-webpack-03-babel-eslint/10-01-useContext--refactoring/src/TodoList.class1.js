@@ -5,7 +5,8 @@
  **/
 import React, { Component } from "react";
 import NewTodo from "./NewTodo";
-import TodoItem from "./TodoItem";
+import TodoItem from "./TodoItem.func";
+// import TodoItem from "./TodoItem.class";
 import { Container, List } from "./Styled";
 import About from "./About";
 import ThemeContext from "./ThemeContext";
