@@ -1,3 +1,8 @@
+/**
+ * -----------------------------------
+ * This component does not use reducer
+ * -----------------------------------
+ **/
 import React, { Component } from "react";
 import NewTodo from "./NewTodo";
 import TodoItem from "./TodoItem";
@@ -27,7 +32,8 @@ export default class TodoList extends Component {
     });
   }
 
-  update(todos) {
+
+  updateTitleAndLocalStorage(todos) {
     const inCompleteTodos = incompleteTodoCount(todos)
     document.title = inCompleteTodos ? `Todos (${inCompleteTodos})` : "Todos";
     window.localStorage.setItem("todos", JSON.stringify(todos));
@@ -37,18 +43,15 @@ export default class TodoList extends Component {
   componentDidMount() {
     const todos = JSON.parse(window.localStorage.getItem("todos") || "[]");
     document.addEventListener("keydown", this.handleKey);
-    this.update(todos);
+    this.updateTitleAndLocalStorage(todos);
     this.setState({ todos });
   }
   componentWillUnmount() {
     document.removeEventListener("keydown", this.handleKey);
   }
   componentDidUpdate(prevProps, prevState) {
-    console.log('component update')
     if (prevState.todos !== this.state.todos) {
-
-      console.log('todo update')
-      this.update(this.state.todos);
+      this.updateTitleAndLocalStorage(this.state.todos);
     }
   }
 
@@ -84,7 +87,6 @@ export default class TodoList extends Component {
   handleAboutClose = () => { this.setState({ showAbout: false }) }
 
   render() {
-    console.log('render')
     const { newTodo, todos, showAbout } = this.state;
     return (
       <ThemeContext.Consumer>
