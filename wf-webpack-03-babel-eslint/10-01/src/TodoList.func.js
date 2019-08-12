@@ -12,6 +12,7 @@ import reducer from './reducer'
 const incompleteTodoCount = todos =>
   todos.reduce((memo, todo) => (!todo.completed ? memo + 1 : memo), 0);
 
+
 export default function TodoList() {
   const [newTodo, updateNewTodo] = useState("");
   const [todos, dispatch] = useReducerWithLocalStorage(reducer, 'todos', []);
@@ -20,18 +21,19 @@ export default function TodoList() {
   const title = inCompleteCount ? `Todos (${inCompleteCount})` : "Todos";
   useDocumentTitle(title);
 
-  let [showAbout, setShowAbout] = useKeyDown(
-    { "?": true, Escape: false },
-    false
-  );
+  let [showAbout, setShowAbout] = useKeyDown({ "?": true, Escape: false }, false)
+
+  const theme = useContext(ThemeContext);
 
   const todoId = useRef(0)
   const handleNewSubmit = e => {
-    e.preventDefault();
-    dispatch({ type: "ADD_TODO", payload:{text: newTodo, id:++todoId.current}});
-    updateNewTodo("");
-  };
-  const theme = useContext(ThemeContext);
+    e.preventDefault()
+    dispatch({ type: "ADD_TODO", payload:{text: newTodo, id:++todoId.current}})
+    updateNewTodo("")
+  }
+  const handleDeleteTodo = id => dispatch({ type: "DELETE_TODO",payload:{id}})
+  const handleToggleComplete = id => dispatch({ type: "TOGGLE_TODO",payload:{id}})
+
 
   return (
     <Container todos={todos}>
@@ -46,8 +48,8 @@ export default function TodoList() {
             <TodoItem
               key={todo.id}
               todo={todo}
-              onChange={id => dispatch({ type: "TOGGLE_TODO",payload:{id}})}
-              onDelete={id => dispatch({ type: "DELETE_TODO",payload:{id}})}
+              onChange={handleToggleComplete}
+              onDelete={handleDeleteTodo}
             />
           ))}
         </List>
