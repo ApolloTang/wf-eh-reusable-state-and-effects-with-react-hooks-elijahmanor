@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { useRef } from "react";
 import NewTodo from "./NewTodo";
 import TodoItem from "./TodoItem";
 import { Container, List } from "./Styled";
@@ -20,9 +21,11 @@ export default function TodoList() {
     { "?": true, Escape: false },
     false
   );
+
+  const todoId = useRef(0)
   const handleNewSubmit = e => {
     e.preventDefault();
-    dispatch({ type: "ADD_TODO", text: newTodo });
+    dispatch({ type: "ADD_TODO", payload:{text: newTodo, id:++todoId.current}});
     updateNewTodo("");
   };
   const theme = useContext(ThemeContext);
@@ -40,8 +43,8 @@ export default function TodoList() {
             <TodoItem
               key={todo.id}
               todo={todo}
-              onChange={id => dispatch({ type: "TOGGLE_TODO", id })}
-              onDelete={id => dispatch({ type: "DELETE_TODO", id })}
+              onChange={id => dispatch({ type: "TOGGLE_TODO",payload:{id}})}
+              onDelete={id => dispatch({ type: "DELETE_TODO",payload:{id}})}
             />
           ))}
         </List>

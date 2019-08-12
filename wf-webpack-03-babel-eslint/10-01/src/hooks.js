@@ -35,37 +35,37 @@ export const useLocalStorage = (key, defaultValue, callback) => {
   return [storage, updateStorage];
 };
 
-
+  const reducer =
+    (state, action) => {
+    switch (action.type) {
+      case "ADD_TODO":
+        return [
+          ...state,
+          { id: action.payload.id, text: action.payload.text, completed: false }
+        ];
+      case "DELETE_TODO":
+        return state.filter(todo => todo.id !== action.payload.id);
+      case "TOGGLE_TODO":
+        return state.map(todo =>
+          todo.id === action.payload.id ? { ...todo, completed: !todo.completed } : todo
+        );
+      default:
+        return state;
+    }
+  }
 
 export const useTodosWithLocalStorage = defaultValue => {
-  const todoId = useRef(0);
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "ADD_TODO":
-      todoId.current += 1;
-      return [
-        ...state,
-        { id: todoId.current, text: action.text, completed: false }
-      ];
-    case "DELETE_TODO":
-      return state.filter(todo => todo.id !== action.id);
-    case "TOGGLE_TODO":
-      return state.map(todo =>
-        todo.id === action.id ? { ...todo, completed: !todo.completed } : todo
-      );
-    default:
-      return state;
-  }
-}
+
+
 
   const initialValue = () => {
     const valueFromStorage = JSON.parse(
       window.localStorage.getItem("todos") || JSON.stringify(defaultValue)
     );
-    todoId.current = valueFromStorage.reduce(
-      (memo, todo) => Math.max(memo, todo.id),
-      0
-    );
+    // todoId.current = valueFromStorage.reduce(
+    //   (memo, todo) => Math.max(memo, todo.id),
+    //   0
+    // );
     return valueFromStorage;
   };
 
