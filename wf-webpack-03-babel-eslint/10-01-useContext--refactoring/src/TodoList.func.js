@@ -1,7 +1,9 @@
 import React, { useState, useContext } from "react";
 import { useRef } from "react";
 import NewTodo from "./NewTodo";
-import TodoItem from "./TodoItem";
+// import TodoItem from "./TodoItem.class1";
+// import TodoItem from "./TodoItem.class2";
+import TodoItem from "./TodoItem.func";
 import { Container, List } from "./Styled";
 import About from "./About";
 import { useReducerWithLocalStorage, useKeyDown } from "./hooks";
