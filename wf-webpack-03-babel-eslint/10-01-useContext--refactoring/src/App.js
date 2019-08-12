@@ -1,6 +1,7 @@
 import React from "react";
 import {useStateWithLocalStorage} from './hooks'
-import TodoList from "./TodoList.func";
+// import TodoList from "./TodoList.func";
+import TodoList from "./TodoList.class1";
 import Switch from "./Switch";
 import { Helmet } from "react-helmet";
 import ThemeContext from "./ThemeContext";
