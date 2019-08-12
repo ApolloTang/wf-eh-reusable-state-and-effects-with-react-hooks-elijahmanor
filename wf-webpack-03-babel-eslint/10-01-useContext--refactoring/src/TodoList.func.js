@@ -28,7 +28,8 @@ export default function TodoList() {
   const todoId = useRef(0)
   const handleNewSubmit = e => {
     e.preventDefault()
-    dispatch({ type: "ADD_TODO", payload:{text: newTodo, id:++todoId.current}})
+    let prevId = todos.reduce((acc, todo)=>Math.max(acc,todo.id), todoId.current)
+    dispatch({ type: "ADD_TODO", payload:{text: newTodo, id:++prevId}})
     updateNewTodo("")
   }
   const handleNewChange = e => { updateNewTodo(e.target.value) }

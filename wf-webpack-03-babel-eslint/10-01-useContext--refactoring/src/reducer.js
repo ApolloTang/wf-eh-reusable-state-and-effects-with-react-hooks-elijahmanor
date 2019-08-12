@@ -1,10 +1,9 @@
 const reducer = (state, action) => {
   switch (action.type) {
     case "ADD_TODO": {
-      let prevId = state.reduce((acc, todo)=>Math.max(acc,todo.id), 0)
       return [
         ...state,
-        { id: ++prevId, text: action.payload.text, completed: false }
+        { id:action.payload.id, text: action.payload.text, completed: false }
       ];
     }
     case "DELETE_TODO":
