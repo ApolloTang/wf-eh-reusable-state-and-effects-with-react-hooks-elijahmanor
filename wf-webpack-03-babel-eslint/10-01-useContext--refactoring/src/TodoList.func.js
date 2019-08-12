@@ -12,6 +12,8 @@ import reducer from './reducer'
 const incompleteTodoCount = todos =>
   todos.reduce((memo, todo) => (!todo.completed ? memo + 1 : memo), 0);
 
+const calGreatestTodoId = (todos=[], startId=0) =>
+  todos.reduce((acc, todo)=>Math.max(acc,todo.id), startId)
 
 export default function TodoList() {
   const [newTodo, updateNewTodo] = useState("");
@@ -25,10 +27,11 @@ export default function TodoList() {
 
   const theme = useContext(ThemeContext);
 
+
   const todoId = useRef(0)
   const handleNewSubmit = e => {
     e.preventDefault()
-    let prevId = todos.reduce((acc, todo)=>Math.max(acc,todo.id), todoId.current)
+    let prevId = calGreatestTodoId(todos, todoId.current) //@TODO only have to do this on reload
     dispatch({ type: "ADD_TODO", payload:{text: newTodo, id:++prevId}})
     updateNewTodo("")
   }
