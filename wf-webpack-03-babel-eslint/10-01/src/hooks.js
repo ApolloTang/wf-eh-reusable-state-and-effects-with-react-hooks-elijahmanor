@@ -1,6 +1,5 @@
-import { useState, useEffect, useMemo, useRef, useReducer } from "react";
+import { useState, useEffect, useReducer } from "react";
 import hookReducerLogger from './hookReducerLogger'
-import reducer from './reducer'
 
 
 export const useKeyDown = (map, defaultValue) => {
@@ -18,44 +17,22 @@ export const useKeyDown = (map, defaultValue) => {
 };
 
 
+export const useReducerWithLocalStorage = (_reducer, storageName, defaultData) => {
+  const readLocalStorage = ([_storageName, _defaultData]) => JSON.parse(
+    window.localStorage.getItem(_storageName) || JSON.stringify(_defaultData)
+  )
+  const writeLocalStorage = (_storageName, data) => {
+    window.localStorage.setItem(_storageName, JSON.stringify(data))
+  }
 
-export const useLocalStorage = (key, defaultValue, callback) => {
-  const initialValue = () => {
-    const valueFromStorage = JSON.parse(
-      window.localStorage.getItem(key) || JSON.stringify(defaultValue)
-    );
-    if (callback) {
-      callback(valueFromStorage);
-    }
-    return valueFromStorage;
-  };
-  const [storage, updateStorage] = useState(initialValue);
-  useEffect(
-    () => {
-      window.localStorage.setItem(key, JSON.stringify(storage));
-    },
-    [storage]
+  const [data, dispatch] = useReducer(
+    hookReducerLogger(_reducer),
+    [storageName, defaultData],
+    readLocalStorage
   );
-  return [storage, updateStorage];
-};
+  useEffect( () => { writeLocalStorage("todos", data) }, [data]);
 
-
-
-export const useTodosWithLocalStorage = defaultValue => {
-  const initialValue = () => {
-    const valueFromStorage = JSON.parse(
-      window.localStorage.getItem("todos") || JSON.stringify(defaultValue)
-    );
-    return valueFromStorage;
-  };
-
-  const [todos, dispatch] = useReducer(
-    hookReducerLogger(reducer),
-    useMemo(initialValue, [])
-  );
-
-  useEffect( () => { window.localStorage.setItem("todos", JSON.stringify(todos)); }, [todos]);
-  return [todos, dispatch];
+  return [data, dispatch];
 };
 
 
@@ -66,7 +43,9 @@ export const useStateWithLocalStorage = (storageName, defaultData) => {
   const writeLocalStorage = (_storageName, _data) => {
     window.localStorage.setItem(_storageName, JSON.stringify(_data))
   }
+
   const [data, updateStorage] = useState(readLocalStorage(storageName, defaultData))
   useEffect( () => { writeLocalStorage(storageName, data) }, [data])
+
   return [data, updateStorage]
 }

@@ -4,19 +4,22 @@ import NewTodo from "./NewTodo";
 import TodoItem from "./TodoItem";
 import { Container, List } from "./Styled";
 import About from "./About";
-import { useTodosWithLocalStorage, useKeyDown } from "./hooks";
+import { useReducerWithLocalStorage, useKeyDown } from "./hooks";
 import { useTitle as useDocumentTitle } from "react-use";
 import ThemeContext from "./ThemeContext";
+import reducer from './reducer'
 
 const incompleteTodoCount = todos =>
   todos.reduce((memo, todo) => (!todo.completed ? memo + 1 : memo), 0);
 
 export default function TodoList() {
   const [newTodo, updateNewTodo] = useState("");
-  const [todos, dispatch] = useTodosWithLocalStorage([]);
+  const [todos, dispatch] = useReducerWithLocalStorage(reducer, 'todos', []);
+
   const inCompleteCount = incompleteTodoCount(todos);
   const title = inCompleteCount ? `Todos (${inCompleteCount})` : "Todos";
   useDocumentTitle(title);
+
   let [showAbout, setShowAbout] = useKeyDown(
     { "?": true, Escape: false },
     false
