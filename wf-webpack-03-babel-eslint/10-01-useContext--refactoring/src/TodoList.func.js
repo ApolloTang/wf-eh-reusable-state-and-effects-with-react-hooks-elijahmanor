@@ -31,8 +31,11 @@ export default function TodoList() {
     dispatch({ type: "ADD_TODO", payload:{text: newTodo, id:++todoId.current}})
     updateNewTodo("")
   }
-  const handleDeleteTodo = id => dispatch({ type: "DELETE_TODO",payload:{id}})
-  const handleToggleComplete = id => dispatch({ type: "TOGGLE_TODO",payload:{id}})
+  const handleNewChange = e => { updateNewTodo(e.target.value) }
+
+  const handleDeleteTodo = id => dispatch({type: "DELETE_TODO",payload:{id}})
+  const handleToggleComplete = id => dispatch({type: "TOGGLE_TODO",payload:{id}})
+  const handleAboutClose = () => {setShowAbout(false)}
 
 
   return (
@@ -40,7 +43,7 @@ export default function TodoList() {
       <NewTodo
         onSubmit={handleNewSubmit}
         value={newTodo}
-        onChange={e => updateNewTodo(e.target.value)}
+        onChange={handleNewChange}
       />
       {!!todos.length && (
         <List theme={theme}>
@@ -54,7 +57,7 @@ export default function TodoList() {
           ))}
         </List>
       )}
-      <About isOpen={showAbout} onClose={() => setShowAbout(false)} />
+      <About isOpen={showAbout} onClose={handleAboutClose} />
     </Container>
   );
 }
